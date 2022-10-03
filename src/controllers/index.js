@@ -1,1 +1,0 @@
-export * as categoriesController from "./categoriesController.js";

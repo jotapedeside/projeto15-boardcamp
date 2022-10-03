@@ -4,6 +4,11 @@ import { stripHtml } from 'string-strip-html';
 
 export const validateCategories = async (req, res, next) => {
   const categoriesValidation = categoriesSchema.validate(req.body, {abortEarly: false});
+
+  if (req.body.name == "") {
+    const erros = categoriesValidation.error.details.map((error) => error.message);
+    return res.status(400).json({status: 400, message: erros});
+  }
   if (categoriesValidation.error) {
     const erros = categoriesValidation.error.details.map((error) => error.message);
     return res.status(422).json({status: 422, message: erros});
@@ -12,13 +17,12 @@ export const validateCategories = async (req, res, next) => {
     name: stripHtml(categoriesValidation.value.name).result,
   }
   res.locals.name = name;
-  console.log("CATEGORIE MIDDLEWARE VALIDATION");
   next();
   return true;
 };
 
 export const CheckIfCategoryAlreadyExists = async (req, res, next) => {
-  const { name } = res.locals.name;
+  const name = res.locals.name;
   try {
     const categoryExists = await categoryAlreadyExists(name);
     if (categoryExists) {
