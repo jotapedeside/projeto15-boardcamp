@@ -105,4 +105,7 @@ export const validateRentalQuery = async (req, res, next) => {
       return res.status(422).json({status: 422, message: "erros"});
     }
   }
+  console.log(customerId, gameId);
+  next();
+  return true;
 }
