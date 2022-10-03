@@ -12,7 +12,12 @@ import { getGames, postGame } from '../controllers/gamesController.js';
 import { validateCustomer, checkIfCpfAlreadyExists, ValidateCpfQuery, ValidateIdQuery } from '../middlewares/customerMiddleware.js';
 import { getCustomer, postCustomer, getCustomerById, putCustomer } from '../controllers/customerController.js';
 
+//Rentals
+import { validateRental, checkIfGameIdAlreadyExists, checkIfCustomerIdAlreadyExists, checkIfGameIsRentaled, validateRentalQuery} from '../middlewares/rentalsMiddleware.js';
+import { getRentals, postRental } from '../controllers/rentalsController.js';
+
 const router = Router();
+
 
 //Categories
 router.get('/categories', getCategories);
@@ -27,5 +32,9 @@ router.get('/customers', ValidateCpfQuery, getCustomer);
 router.post('/customers', validateCustomer, checkIfCpfAlreadyExists, postCustomer);
 router.get('/customers/:id', ValidateIdQuery, getCustomerById);
 router.put('/customers/:id', ValidateIdQuery, validateCustomer, checkIfCpfAlreadyExists, putCustomer);
+
+//Rentals
+router.get('/rentals', validateRentalQuery, getRentals);
+router.post('/rentals', validateRental, checkIfGameIdAlreadyExists, checkIfCustomerIdAlreadyExists, checkIfGameIsRentaled, postRental);
 
 export default router;
