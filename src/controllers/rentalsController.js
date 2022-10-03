@@ -69,35 +69,25 @@ export const customerAlreadyExists= async (customerId) => {
 
 //Actual execution of HTTP Methods
 export const actuallyGetRentalsByCustomerId = async (customerId, gameId) => {
-  const sql = `SELECT * FROM rentals WHERE "customerId" = $1 AND "gameId" = $2`;
+  /*const sql = `SELECT * FROM rentals WHERE "customerId" = $1 AND "gameId" = $2`;
   const rentals = await connection.query(sql, [customerId, gameId]);
-  return rentals.rows;
-  /*console.log(customerId, gameId, "actuallyGetRentalsByCustomerId");
+  return rentals.rows;*/
+  console.log(customerId, gameId, "actuallyGetRentalsByCustomerId");
   const customerIdIncoming = customerId === 0 ? `>` : `=`;
   const gameIdIncoming = gameId === 0 ? `>` : `=`;
   console.log(customerIdIncoming, gameIdIncoming, 'customer and game id incoming');
   const sql = `SELECT rentals.*, row_to_json(customer) AS customer, row_to_json(game) AS game
     FROM rentals
-    JOIN (
-      SELECT "id", "name"
-      FROM customers
-    ) AS customer
+    JOIN (SELECT "id", "name" FROM customers ) AS customer
     ON rentals."customerId" = customer."id"
-    JOIN (
-      SELECT games."id", games."name", games."categoryId", categories."name" AS "categoryName"
-      FROM games
-      JOIN categories
-      ON categories."id" = games."categoryId"
-    ) AS game
+    JOIN ( SELECT games."id", games."name", games."categoryId", categories."name" AS "categoryName"
+    FROM games JOIN categories ON categories."id" = games."categoryId" ) AS game
     ON rentals."gameId" = game."id"
     WHERE rentals."customerId" ${customerIdIncoming} $1
     AND rentals."gameId" ${gameIdIncoming} $2`;
 
-  const { rows: rentalsList } = await connection.query(sql, [
-    customerId,
-    gameId,
-  ]);
-  return rentalsList;*/
+  const { rows: rentalsList } = await connection.query(sql, [customerId, gameId,]);
+  return rentalsList;
 };
 
 export const actuallyPostRental = async (rental) => {
