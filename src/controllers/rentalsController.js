@@ -9,14 +9,15 @@ export const getRentalsByGameId = async (gameId) => {
 
 export const getRentals = async (req, res) => {
   const { customerId, gameId } = res.locals;
-  console.log(res.locals.gameId);
-  console.log(res.locals.customerId);
-  console.log(customerId, gameId);
+  console.log(customerId, gameId, "logs");
   try {
-    if (customerId) {
+    //if (customerId) {
+
+      console.log(customerId, gameId, "logs2");
       const rentals = await actuallyGetRentalsByCustomerId(customerId, gameId);
+      console.log(rentals, "rentals");
       res.status(200).json(rentals);
-    } /*else if (gameId) {
+    /*} else if (gameId && !customerId) {
       const rentals = await getRentalsByGameId(gameId);
       res.status(200).json(rentals);
     } else {
@@ -69,9 +70,7 @@ export const customerAlreadyExists= async (customerId) => {
 
 //Actual execution of HTTP Methods
 export const actuallyGetRentalsByCustomerId = async (customerId, gameId) => {
-  /*const sql = `SELECT * FROM rentals WHERE "customerId" = $1 AND "gameId" = $2`;
-  const rentals = await connection.query(sql, [customerId, gameId]);
-  return rentals.rows;*/
+  console.log("aaaaaaaaaaaaaaaa");
   console.log(customerId, gameId, "actuallyGetRentalsByCustomerId");
   const customerIdIncoming = customerId === 0 ? `>` : `=`;
   const gameIdIncoming = gameId === 0 ? `>` : `=`;

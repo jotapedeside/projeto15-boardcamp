@@ -85,8 +85,8 @@ export const validateRentalQuery = async (req, res, next) => {
   const customerId = req.query?.customerId;
   const gameId = req.query?.gameId;
 
-  //if (!customerId) res.locals.customerId = null;
-  if (!customerId) res.locals.customerId = 0;
+  if (customerId == undefined) res.locals.customerId = 0;
+  
   else {
     console.log(customerId);
     const customerValidation = customerRentalQuerySchema.validate(customerId, { abortEarly: false });
@@ -96,7 +96,8 @@ export const validateRentalQuery = async (req, res, next) => {
     }
   }
 
-  if (!gameId) res.locals.gameId = 0;
+  if (gameId == undefined) res.locals.gameId = 0;
+  
   else {
     const gameValidation = gameRentalQuerySchema.validate(gameId, { abortEarly: false });
     if (gameValidation.error) {
@@ -105,7 +106,6 @@ export const validateRentalQuery = async (req, res, next) => {
       return res.status(422).json({status: 422, message: "erros"});
     }
   }
-  console.log(customerId, gameId);
   next();
   return true;
 }
