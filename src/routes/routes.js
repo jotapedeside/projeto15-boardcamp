@@ -1,14 +1,16 @@
 import { Router } from 'express';
 
 //Categories
-import { getCategories, postCategories } from '../controllers/categoriesController.js';
 import { validateCategories, checkIfCategoryAlreadyExists } from '../middlewares/categoriesMiddleware.js';
+import { getCategories, postCategories } from '../controllers/categoriesController.js';
 
 //Games
-import { getGames, postGame } from '../controllers/gamesController.js';
 import { validateGame, validateGameQuery, checkIfNameAlreadyExists, checkIfCategoryIdAlreadyExists } from '../middlewares/gamesMiddleware.js';
+import { getGames, postGame } from '../controllers/gamesController.js';
 
-
+//Customers
+import { validateCustomer, checkIfCpfAlreadyExists, ValidateCpfQuery, ValidateIdQuery } from '../middlewares/customerMiddleware.js';
+import { getCustomer, postCustomer, getCustomerById, putCustomer } from '../controllers/customerController.js';
 
 const router = Router();
 
@@ -19,5 +21,11 @@ router.post('/categories', validateCategories, checkIfCategoryAlreadyExists, pos
 //Games
 router.get('/games', validateGameQuery, getGames);
 router.post('/games', validateGame, checkIfNameAlreadyExists, checkIfCategoryIdAlreadyExists, postGame);
+
+//Customers
+router.get('/customers', ValidateCpfQuery, getCustomer);
+router.post('/customers', validateCustomer, checkIfCpfAlreadyExists, postCustomer);
+router.get('/customers/:id', ValidateIdQuery, getCustomerById);
+router.put('/customers/:id', ValidateIdQuery, validateCustomer, checkIfCpfAlreadyExists, putCustomer);
 
 export default router;

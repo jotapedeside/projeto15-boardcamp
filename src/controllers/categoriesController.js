@@ -1,5 +1,6 @@
 import connection from '../models/index.js';
 
+//Basics
 export const getCategories = async (req, res) => {
   try {
     const categoriesName = await actuallyGetCategories();
@@ -18,6 +19,7 @@ export const postCategories = async (req, res) => {
     res.status(500);
   }
 };
+
 
 //Actual execution of HTTP Methods
 export const actuallyGetCategories = async () => {

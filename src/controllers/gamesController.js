@@ -1,15 +1,6 @@
 import connection from '../models/index.js';
 
-export const postGame = async (req, res) => {
-  try {
-    const { name, image, stockTotal, categoryId, pricePerDay } = res.locals.game;
-    await actuallyPostGame(name, image, stockTotal, categoryId, pricePerDay);
-    res.status(201).json({status: 201, message: 'Game created'});
-  } catch (error) {
-    res.status(500);
-  }
-};
-
+//Basics
 export const getGames = async (req, res) => {
   const { name } = res.locals;
   try {
@@ -20,6 +11,18 @@ export const getGames = async (req, res) => {
   }
 };
 
+export const postGame = async (req, res) => {
+  try {
+    const { name, image, stockTotal, categoryId, pricePerDay } = res.locals.game;
+    await actuallyPostGame(name, image, stockTotal, categoryId, pricePerDay);
+    res.status(201).json({status: 201, message: 'Game created'});
+  } catch (error) {
+    res.status(500);
+  }
+};
+
+
+//Checks
 export const nameAlreadyExists = async (name) => {
   //const sql = `SELECT (name) FROM games WHERE name = $1`;
   const sql = `SELECT (name) FROM games WHERE LOWER (name) = LOWER ($1)`;
@@ -38,6 +41,7 @@ export const categoryAlreadyExists = async (id) => {
   }
   return false;
 };
+
 
 //Actual execution of HTTP Methods
 export const actuallyGetGames = async (name) => {
