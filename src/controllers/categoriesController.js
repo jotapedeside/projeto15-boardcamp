@@ -7,7 +7,7 @@ export const getCategories = async (req, res) => {
   } catch (error) {
     res.status(500);
   }
-}
+};
 
 export const postCategories = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ export const postCategories = async (req, res) => {
   } catch (error) {
     res.status(500);
   }
-}
+};
 
 //Actual execution of HTTP Methods
 export const actuallyGetCategories = async () => {
@@ -29,7 +29,6 @@ export const actuallyGetCategories = async () => {
 export const actuallyPostCategories = async (name) => {
   const sql = `INSERT INTO categories (name) VALUES ($1)`;
   const res = await connection.query(sql, [name]);
-  console.log("CATEGORIE MODELS");
 };
 
 export const categoryAlreadyExists = async (name) => {

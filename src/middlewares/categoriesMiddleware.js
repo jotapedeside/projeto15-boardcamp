@@ -21,7 +21,7 @@ export const validateCategories = async (req, res, next) => {
   return true;
 };
 
-export const CheckIfCategoryAlreadyExists = async (req, res, next) => {
+export const checkIfCategoryAlreadyExists = async (req, res, next) => {
   const name = res.locals.name;
   try {
     const categoryExists = await categoryAlreadyExists(name);
