@@ -61,7 +61,6 @@ export const cpfAlreadyExists = async (cpf) => {
 
 //Actual execution of HTTP Methods
 export const actuallyGetCustomer = async (cpf) => {
-  console.log(cpf);
   const sql = `SELECT * FROM customers WHERE cpf LIKE $1`;
   const res = await connection.query(sql, [`${cpf}%`]);
   return res.rows;
@@ -79,7 +78,6 @@ export const actuallyGetCustomerById = async (id) => {
 };
 
 export const actuallyPutCustomer = async (id, name, phone, cpf, birthday) => {
-  console.log(id, name, phone, cpf, birthday);
   const sql = `UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5`;
   const res = await connection.query(sql, [name, phone, cpf, birthday, id]);
   return res.rows;
