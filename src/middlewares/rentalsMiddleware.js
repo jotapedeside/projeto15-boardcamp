@@ -86,25 +86,42 @@ export const validateRentalQuery = async (req, res, next) => {
   const gameId = req.query?.gameId;
 
   if (customerId == undefined) res.locals.customerId = 0;
-  
   else {
-    console.log(customerId);
-    const customerValidation = customerRentalQuerySchema.validate(customerId, { abortEarly: false });
-    if (customerValidation.error) {
-      const erros = customerValidation.error.details.map((error) => error.message);
-      return res.status(422).json({status: 422, message: erros});
+    try {
+      const customerExists = await customerAlreadyExists(customerId);
+      console.log(customerExists, 'tem mesmo?');
+      if (customerExists.length === 0) {
+        return res.status(400).json({status: 400, message: "User does not exist"});
+      }
+      res.locals.customerId = customerId;
+    } catch (error) {
+      res.status(500);
     }
   }
 
   if (gameId == undefined) res.locals.gameId = 0;
-  
   else {
-    const gameValidation = gameRentalQuerySchema.validate(gameId, { abortEarly: false });
-    if (gameValidation.error) {
-      console.log(gameId);
-      const erros = gameValidation.error.details.map((error) => error.message);
-      return res.status(422).json({status: 422, message: "erros"});
+    try {
+      const gameExists = await gameAlreadyExists(gameId);
+      if (gameExists.length === 0) {
+        return res.status(400).json({status: 400, message: "Game does not exist"});
+      }
+      res.locals.gameId = gameId;
+    } catch (error) {
+      res.status(500);
     }
+  }
+  next();
+  return true;
+};
+
+export const checkIfRentalComplete = async (req, res, next) => {
+  const { id } = res.locals;
+  try {
+    const rental = await rentalAlreadyReturned(id);
+    if (!rental) return res.status(400).json({status: 400, message: "Rental already complete"});
+  } catch (error) {
+    res.status(500);
   }
   next();
   return true;
